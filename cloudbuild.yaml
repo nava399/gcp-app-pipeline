@@ -17,8 +17,8 @@ steps:
       - 'rolling-action'
       - 'start-update'
       - 'groupofvms'
-      - '--version=template=app-template-v1'
-      - '--region=us-east4'                 
+      - '--version=template=projects/qwiklabs-gcp-03-bf3e2ff219d3/regions/us-east4/instanceTemplates/app-template-v1'
+      - '--region=us-east4'
 
 options:
   logging: CLOUD_LOGGING_ONLY
