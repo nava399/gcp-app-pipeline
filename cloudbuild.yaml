@@ -7,7 +7,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-east4-docker.pkg.dev/qwiklabs-gcp-03-bf3e2ff219d3/my-app-repo/my-app:$SHORT_SHA']
 
-  # Step 3: Safely rolling update the Managed Instance Group
+  # Step 3: Safely rolling update the Regional Managed Instance Group
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
@@ -18,7 +18,7 @@ steps:
       - 'start-update'
       - 'groupofvms'
       - '--version=template=app-template-v1'
-      - '--zone=us-east4'
-      - '--max-unavailable=0' # Ensures zero-downtime by keeping old instances alive until new ones are ready
+      - '--region=us-east4'                 # 👈 Changed from --zone to --region
+
 options:
   logging: CLOUD_LOGGING_ONLY
