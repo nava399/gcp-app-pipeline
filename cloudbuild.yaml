@@ -1,13 +1,22 @@
 steps:
-  # Step 1: Build the Docker Image
+  # Step 1: Build the Docker Image with BOTH the commit SHA and the latest tag
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-east4-docker.pkg.dev/qwiklabs-gcp-03-bf3e2ff219d3/my-app-repo/my-app:$SHORT_SHA', '.']
+    args: 
+      - 'build'
+      - '-t'
+      - 'us-east4-docker.pkg.dev/qwiklabs-gcp-03-bf3e2ff219d3/my-app-repo/my-app:$SHORT_SHA'
+      - '-t'
+      - 'us-east4-docker.pkg.dev/qwiklabs-gcp-03-bf3e2ff219d3/my-app-repo/my-app:latest' # 👈 Adds the missing target tag
+      - '.'
 
-  # Step 2: Push the Image to Artifact Registry
+  # Step 2: Push BOTH versions to your Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-east4-docker.pkg.dev/qwiklabs-gcp-03-bf3e2ff219d3/my-app-repo/my-app:$SHORT_SHA']
+    
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-east4-docker.pkg.dev/qwiklabs-gcp-03-bf3e2ff219d3/my-app-repo/my-app:latest'] # 👈 Pushes the latest tag up
 
-  # Step 3: Safely rolling update the Regional Managed Instance Group
+  # Step 3: Safely rolling update the Managed Instance Group
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
@@ -17,7 +26,7 @@ steps:
       - 'rolling-action'
       - 'start-update'
       - 'groupofvms'
-      - '--version=app-template-v2'
+      - '--version=template=app-template-v2'
       - '--region=us-east4'
 
 options:
