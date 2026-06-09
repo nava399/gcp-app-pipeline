@@ -17,7 +17,7 @@ steps:
       - 'rolling-action'
       - 'start-update'
       - 'groupofvms'
-      - '--version=template=projects/qwiklabs-gcp-03-bf3e2ff219d3/regions/us-east4/instanceTemplates/app-template-v2' # 👈 Changed to v2
+      - '--version=app-template-v2'
       - '--region=us-east4'
 
 options:
