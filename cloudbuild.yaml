@@ -20,3 +20,5 @@ steps:
       - '--version=template=[YOUR_INSTANCE_TEMPLATE_NAME]'
       - '--zone=[YOUR_ZONE]'
       - '--max-unavailable=0' # Ensures zero-downtime by keeping old instances alive until new ones are ready
+options:
+  logging: CLOUD_LOGGING_ONLY
