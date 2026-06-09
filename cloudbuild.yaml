@@ -1,0 +1,22 @@
+steps:
+  # Step 1: Build the Docker Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/[PROJECT_ID]/my-app-repo/my-app:$SHORT_SHA', '.']
+
+  # Step 2: Push the Image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/[PROJECT_ID]/my-app-repo/my-app:$SHORT_SHA']
+
+  # Step 3: Safely rolling update the Managed Instance Group
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'compute'
+      - 'instance-groups'
+      - 'managed'
+      - 'rolling-action'
+      - 'start-update'
+      - '[YOUR_MIG_NAME]'
+      - '--version=template=[YOUR_INSTANCE_TEMPLATE_NAME]'
+      - '--zone=[YOUR_ZONE]'
+      - '--max-unavailable=0' # Ensures zero-downtime by keeping old instances alive until new ones are ready
