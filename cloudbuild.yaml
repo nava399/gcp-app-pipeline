@@ -18,7 +18,7 @@ steps:
       - 'start-update'
       - 'groupofvms'
       - '--version=template=app-template-v1'
-      - '--region=us-east4'                 # 👈 Changed from --zone to --region
+      - '--region=us-east4'                 
 
 options:
   logging: CLOUD_LOGGING_ONLY
